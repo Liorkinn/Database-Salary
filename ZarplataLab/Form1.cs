@@ -27,7 +27,7 @@ namespace ZarplataLab
             public string money;
         }
 
-        MySqlConnection uwu;
+        MySqlConnection connections;
 
         List<str> zarplata()
         {
@@ -36,15 +36,15 @@ namespace ZarplataLab
             stringBuilder.UserID = "root";
             stringBuilder.Database = "zarplatalab";
             stringBuilder.SslMode = MySqlSslMode.None;
-            uwu = new MySqlConnection(stringBuilder.ConnectionString);
+            connections = new MySqlConnection(stringBuilder.ConnectionString);
 
-            MySqlCommand command = uwu.CreateCommand();
+            MySqlCommand command = connections.CreateCommand();
             command.CommandText = "SELECT zarplata.id,`name`, `surname`, `otch`,`status`,`money` FROM zarplatalab.zarplata JOIN  zarplatalab.info ON zarplata.fio_id = info.id";
 
             List<str> bd = new List<str>();
             try
             {
-                uwu.Open();
+                connections.Open();
                 using (DbDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -76,16 +76,16 @@ namespace ZarplataLab
             stringBuilder.UserID = "root";
             stringBuilder.Database = "zarplatalab";
             stringBuilder.SslMode = MySqlSslMode.None;
-            uwu = new MySqlConnection(stringBuilder.ConnectionString);
+            connections = new MySqlConnection(stringBuilder.ConnectionString);
 
-            MySqlCommand command = uwu.CreateCommand();
+            MySqlCommand command = connections.CreateCommand();
             command.CommandText = "SELECT `id`,`name`, `surname`, `otch` FROM zarplatalab.info";
 
             List<str> bd = new List<str>();
 
             try
             {
-                uwu.Open();
+                connections.Open();
                 using (DbDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -145,10 +145,10 @@ namespace ZarplataLab
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            Form1 Kurisu = new Form1();
-            var Maki = Kurisu.information();
+            Form1 pp = new Form1();
+            var ll = pp.information();
             label6.Text = "";
-            foreach (var data in Maki)
+            foreach (var data in ll)
             {
                 label6.Text += (data.id + " | " + data.name.PadRight(15) + " | " + data.surname.PadRight(10) + " | " + data.otch.PadRight(10) + "\n");
             }
@@ -172,10 +172,10 @@ namespace ZarplataLab
 
         private void button4_Click_1(object sender, EventArgs e)
         {
-            Form1 Kurisu = new Form1();
-            var Maki = Kurisu.zarplata();
+            Form1 form = new Form1();
+            var ll = form.zarplata();
             label6.Text = "";
-            foreach (var data in Maki)
+            foreach (var data in ll)
             {
                 label6.Text += (data.id + " | " + data.name.PadRight(15) + " | " + data.surname.PadRight(10) + " | " + data.otch.PadRight(10) + " | " + data.status.PadRight(10) + " | " + data.money.PadRight(10) + "\n");
             }
