@@ -29,6 +29,7 @@ namespace ZarplataLab
 
         MySqlConnection connections;
 
+   
         List<str> zarplata()
         {
             MySqlConnectionStringBuilder stringBuilder = new MySqlConnectionStringBuilder();
@@ -108,12 +109,24 @@ namespace ZarplataLab
             return bd;
 
         }
+        public DataTable getTableInfo(string query)
+        {
+            MySqlCommand queryExecute = new MySqlCommand(query, connections);
+            DataTable ass = new DataTable();
+            ass.Load(queryExecute.ExecuteReader());
+            return ass;
+        }
         //**************************************************************
-        public Form1()
-            {
-            InitializeComponent();
-            }
         database db = new database("127.0.0.1", "root", "", "zarplatalab");
+
+        public Form1()
+        {
+            InitializeComponent();
+            comboBox1.DataSource = db.getTableInfo("SELECT `id`, `name` FROM `info`;");
+            comboBox1.DisplayMember = "name";
+            comboBox1.ValueMember = "id";
+        }
+
         private void Label1_Click(object sender, EventArgs e)
         {
 
@@ -143,6 +156,7 @@ namespace ZarplataLab
             }
         }
 
+       
         private void button2_Click_1(object sender, EventArgs e)
         {
             Form1 pp = new Form1();
@@ -190,24 +204,30 @@ namespace ZarplataLab
 
         private void button5_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-        {
-            int id = (int)numericUpDown2.Value;
-            var del = db.delete(id);
-            if (del != -1)
+            database db = new database("127.0.0.1", "root", "", "zarplatalab");
+            int id = Convert.ToInt32(comboBox1.SelectedValue);      
+            if (db.delete(id) == -1)
             {
-                label6.Text = String.Format("Успешно. Запись удалена");
+                MessageBox.Show("error");
             }
             else
             {
-                label6.Text = ("Ошибка удаления.");
+                MessageBox.Show("ok");
             }
         }
 
+        
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }

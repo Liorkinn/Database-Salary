@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Data.Common;
+using System.Data;
 
 namespace ZarplataLab
 {
@@ -23,6 +24,16 @@ namespace ZarplataLab
             Connect.Database = database;
             Connect.CharacterSet = "utf8";
             Connection = new MySqlConnection(Connect.ConnectionString);
+        }
+
+        public DataTable getTableInfo(string query)
+        {
+            Connection.Open();
+            MySqlCommand queryExecute = new MySqlCommand(query, Connection);
+            DataTable ass = new DataTable();
+            ass.Load(queryExecute.ExecuteReader());
+            return ass;
+
         }
         public long download(string name, string surname, string otch)
         {
@@ -77,7 +88,7 @@ namespace ZarplataLab
         public long delete(int id)
         {
             MySqlCommand command = Connection.CreateCommand();
-            command.CommandText = "DELETE FROM zarplata where id = ?id";
+            command.CommandText = "DELETE FROM info where id = ?id";
             command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
             try
             {
@@ -95,6 +106,8 @@ namespace ZarplataLab
                 Connection.Close();
             }
             return -1;
-        }      
+        }
+
+
     }
 }
