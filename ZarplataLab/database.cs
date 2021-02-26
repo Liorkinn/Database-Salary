@@ -12,6 +12,8 @@ namespace ZarplataLab
 {
     class database
     {
+
+
         MySqlConnection Connection;
         MySqlConnectionStringBuilder Connect = new MySqlConnectionStringBuilder();
 
@@ -32,11 +34,13 @@ namespace ZarplataLab
             MySqlCommand queryExecute = new MySqlCommand(query, Connection);
             DataTable ass = new DataTable();
             ass.Load(queryExecute.ExecuteReader());
+            Connection.Close();
             return ass;
 
         }
         public long download(string name, string surname, string otch)
         {
+
             MySqlCommand command = Connection.CreateCommand();
             command.CommandText = "INSERT INTO info(name, surname, otch) VALUES(?name, ?surname, ?otch)";
             command.Parameters.Add("?name", MySqlDbType.VarChar).Value = name;
@@ -46,6 +50,8 @@ namespace ZarplataLab
             {
                 Connection.Open();
                 command.ExecuteNonQuery();
+                Form1 form = new Form1();
+                form.zagruzka();
                 return command.LastInsertedId;
             }
             catch (Exception ex)
@@ -61,6 +67,7 @@ namespace ZarplataLab
 
         public long download2(string status, string money, int fio_id)
         {
+
             MySqlCommand command = Connection.CreateCommand();
             command.CommandText = "INSERT INTO `zarplatalab`.`zarplata`(status, money, fio_id) VALUES(?status, ?money, ?fio_id)";
 
@@ -71,6 +78,8 @@ namespace ZarplataLab
             {
                 Connection.Open();
                 command.ExecuteNonQuery();
+                Form1 form = new Form1();
+                form.zagruzka();
                 return command.LastInsertedId;
             }
             catch (Exception ex)
@@ -88,13 +97,16 @@ namespace ZarplataLab
         public long delete(int id)
         {
             MySqlCommand command = Connection.CreateCommand();
-            command.CommandText = "DELETE FROM info where id = ?id";
+            command.CommandText = "DELETE FROM zarplata where id = ?id";
             command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
             try
             {
                 Connection.Open();
                 command.ExecuteNonQuery();
+                Form1 form = new Form1();
+                form.zagruzka();
                 return command.LastInsertedId;
+
             }
             catch (Exception ex)
             {
@@ -106,8 +118,7 @@ namespace ZarplataLab
                 Connection.Close();
             }
             return -1;
+
         }
-
-
     }
 }
