@@ -80,7 +80,7 @@ namespace ZarplataLab
             connections = new MySqlConnection(stringBuilder.ConnectionString);
 
             MySqlCommand command = connections.CreateCommand();
-            command.CommandText = "SELECT zarplata.id,`name`, `surname`, `otch`,`status`,`money` FROM zarplatalab.zarplata JOIN  zarplatalab.info ON zarplata.fio_id = info.id";
+            command.CommandText = "SELECT id, name, surname, otch FROM zarplatalab.info";
 
             List<str> bd = new List<str>();
 
@@ -97,8 +97,6 @@ namespace ZarplataLab
                             name = reader.GetString(1),
                             surname = reader.GetString(2),
                             otch = reader.GetString(3),
-                            status = reader.GetString(4),
-                            money = reader.GetString(5),
                         };
                         bd.Add(databd);
                     }
@@ -137,6 +135,10 @@ namespace ZarplataLab
             comboBox1.DataSource = db.getTableInfo("SELECT fio_id, name FROM zarplata join info on fio_id = info.id;");
             comboBox1.DisplayMember = "name";
             comboBox1.ValueMember = "fio_id";
+
+            comboBox2.DataSource = db.getTableInfo("SELECT id,  surname FROM info");
+            comboBox2.DisplayMember = "surname";
+            comboBox2.ValueMember = "id";
         }
 
         public void zagruzka()
@@ -188,29 +190,32 @@ namespace ZarplataLab
         {
             Form1 pp = new Form1();
             var ll = pp.information();
-            label6.Text = "";
+            textBox6.Text = "";
             foreach (var data in ll)
-            {
-                label6.Text += (data.id + " | " + data.name.PadRight(15) + " | " + data.surname.PadRight(10) + " | " + data.otch.PadRight(10) + " | " + data.status.PadRight(10) + " | " + data.money.PadRight(10) + "\n");
+            {           
+                textBox6.Text += (data.id + " | " + data.name.PadRight(15) + " | " + data.surname.PadRight(10) + " | " + data.otch.PadRight(10) + "\r\n");
             }
             pp.zagruzka();
         }
 
         private void button3_Click_1(object sender, EventArgs e)
         {
+
+           
             Form1 form = new Form1();
             string status = textBox4.Text;
             string money = textBox5.Text;
-            int fio_id = (int)numericUpDown1.Value;
+            int fio_id = Convert.ToInt32(comboBox2.SelectedValue);
+            // int fio_id = (int)numericUpDown1.Value;
             var end = db.download2(status, money, fio_id);
             if (end != -1)
             {
-                label6.Text = String.Format("Успешно", end);
+                textBox6.Text = String.Format("Успешно", end);
                 zagruzka();
             }
             else
             {
-                label6.Text = ("Ошибка добавления.");
+                textBox6.Text = ("Ошибка добавления.");
             }
             zagruzka();
         }
@@ -220,10 +225,10 @@ namespace ZarplataLab
             Form1 form = new Form1();
             int id = Convert.ToInt32(comboBox1.SelectedValue);
             var ll = form.zarplata(id);
-            label6.Text = "";
+            textBox6.Text = "";
             foreach (var data in ll)
             {
-                label6.Text += (data.id + " | " + data.name.PadRight(15) + " | " + data.surname.PadRight(10) + " | " + data.otch.PadRight(10) + " | " + data.status.PadRight(10) + " | " + data.money.PadRight(10) + "\n");
+                textBox6.Text += (data.id + " | " + data.name.PadRight(15) + " | " + data.surname.PadRight(10) + " | " + data.otch.PadRight(10) + " | " + data.status.PadRight(10) + " | " + data.money.PadRight(10) + "\r\n");
             }
             zagruzka();
         }
