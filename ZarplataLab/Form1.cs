@@ -132,9 +132,9 @@ namespace ZarplataLab
         public Form1()
         {
             InitializeComponent();
-            comboBox1.DataSource = db.getTableInfo("SELECT fio_id, name FROM zarplata join info on fio_id = info.id;");
+            comboBox1.DataSource = db.getTableInfo("SELECT  zarplata.id,  `name` FROM `zarplata` join `info` on `fio_id` = info.id");
             comboBox1.DisplayMember = "name";
-            comboBox1.ValueMember = "fio_id";
+            comboBox1.ValueMember = "id";
 
             comboBox2.DataSource = db.getTableInfo("SELECT id,  surname FROM info");
             comboBox2.DisplayMember = "surname";
@@ -149,9 +149,13 @@ namespace ZarplataLab
             //comboBox1.Dispose();
             comboBox1.DataSource = null;
             //comboBox1.Items.Clear();
-            comboBox1.DataSource = db.getTableInfo("SELECT fio_id, name FROM zarplata join info on fio_id = info.id;");
+            comboBox1.DataSource = db.getTableInfo("SELECT  zarplata.id,  `name` FROM `zarplata` join `info` on `fio_id` = info.id");
             comboBox1.DisplayMember = "name";
-            comboBox1.ValueMember = "fio_id";
+            comboBox1.ValueMember = "id";
+
+            comboBox2.DataSource = db.getTableInfo("SELECT id,  surname FROM info");
+            comboBox2.DisplayMember = "surname";
+            comboBox2.ValueMember = "id";
         }
         private void Label1_Click(object sender, EventArgs e)
         {
@@ -223,7 +227,7 @@ namespace ZarplataLab
         private void button4_Click_1(object sender, EventArgs e)
         {          
             Form1 form = new Form1();
-            int id = Convert.ToInt32(comboBox1.SelectedValue);
+            int id = Convert.ToInt32(comboBox2.SelectedValue);
             var ll = form.zarplata(id);
             textBox6.Text = "";
             foreach (var data in ll)
